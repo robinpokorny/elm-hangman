@@ -11165,7 +11165,7 @@ Elm.Hangman.make = function (_elm) {
    $String = Elm.String.make(_elm),
    $Task = Elm.Task.make(_elm);
    var _op = {};
-   var wotdUrl = "http://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=noun&minCorpusCount=100000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5";
+   var wotdUrl = "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=noun&minCorpusCount=100000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5";
    var showSelected = F2(function (word,selected) {    return A2($String.map,function (c) {    return A2($Set.member,c,selected) ? c : _U.chr("_");},word);});
    var wrongAttempts = function (_p0) {    var _p1 = _p0;return $Set.size(A2($Set.diff,_p1.used,$Set.fromList($String.toList(_p1.word))));};
    var winner = function (_p2) {    var _p3 = _p2;return A2($String.all,function (c) {    return A2($Set.member,c,_p3.used);},_p3.word);};

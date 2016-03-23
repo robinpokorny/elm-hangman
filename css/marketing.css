@@ -4,30 +4,19 @@
     box-sizing: border-box;
 }
 
-/*
- * -- BASE STYLES --
- * Most of these are inherited from Base, but I want to change a few.
- */
 body {
     background: #1f8dd6;
     line-height: 1.7em;
-    color: #7f8c8d;
     font-size: 13px;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-label {
-    color: #34495e;
+a {
+    text-decoration: none;
+    color: white;
 }
-
-.pure-img-responsive {
-    max-width: 100%;
-    height: auto;
+a:hover,
+a:focus {
+    text-decoration: underline;
 }
 
 .pure-button {
@@ -52,19 +41,11 @@ label {
 .home-menu {
     background: #2d3e50;
 }
-.pure-menu.pure-menu-fixed {
-    border-bottom: none;
-    z-index: 4;
-}
 
 .home-menu .pure-menu-heading {
     color: white;
     font-weight: 400;
     font-size: 120%;
-}
-
-.home-menu .pure-menu-selected a {
-    color: white;
 }
 
 .home-menu a {
@@ -78,24 +59,15 @@ label {
 }
 
 .splash-container {
-    z-index: 1;
-    overflow: hidden;
     width: 100%;
     height: 88%;
-    top: 0;
-    left: 0;
-    position: fixed !important;
 }
 
 .splash {
     width: 80%;
     max-width: 50em;
-    height: 50%;
-    margin: auto;
-    position: absolute;
-    top: 100px; left: 0; bottom: 0; right: 0;
+    margin: 20vh auto;
     text-align: center;
-    text-transform: uppercase;
 }
 
 .splash-head {
@@ -110,11 +82,18 @@ label {
     letter-spacing: .3em;
 }
 
-/* This is the subheading that appears on the blue section */
 .splash-subhead {
     color: white;
     letter-spacing: 0.05em;
     opacity: 0.8;
+    text-transform: uppercase;
+}
+
+.footer {
+    width: 80%;
+    max-width: 50em;
+    margin: auto;
+    color: #E6E6E6;
 }
 
 @media (min-width: 48em) {
