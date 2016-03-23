@@ -1,15 +1,17 @@
-module Hangman where
+module Hangman (init, view, update, Model, Action(RequestMore, Guess)) where
 
+
+import Char
+import String
+import Set exposing (Set)
+import Json.Decode as Json
+import Task
+import Effects exposing (Effects)
 import Http
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Effects exposing (Effects)
-import Set exposing (Set)
-import Char
-import String
-import Json.Decode as Json
-import Task
+
 
 -- MODEL
 
@@ -18,6 +20,8 @@ type alias Model =
   , used: Set Char 
   }
 
+
+init: (Model, Effects Action)
 init =
   ( { word = "hangman"
     , used = Set.empty
@@ -25,20 +29,30 @@ init =
   , getRandomWord
   )
 
+attemptsCount : Int
+attemptsCount =
+  6
+
+
 -- UPDATE
 
-type Action = Guess Char | RequestMore | NewWord (Maybe String)
+type Action =
+  Guess Char
+  | RequestMore
+  | NewWord (Maybe String)
+
 
 update : Action -> Model -> (Model, Effects Action)
 update action model =
   case action of
     Guess c ->
-      (
-        if (status model == Guessing)
-        then
-          { model | used = Set.insert (Char.toLower c) model.used}
-        else
-          model
+      ( case (status model) of
+          Guessing _ ->
+            { model | used = Set.insert (Char.toLower c) model.used}
+
+          _ ->
+            model
+
       , Effects.none
       )
 
@@ -54,6 +68,7 @@ update action model =
       , getRandomWord
       )
 
+
 getRandomWord : Effects Action
 getRandomWord =
   Http.get decodeJson wotdUrl
@@ -61,23 +76,35 @@ getRandomWord =
     |> Task.map NewWord
     |> Effects.task
 
+
 decodeJson : Json.Decoder String
 decodeJson =
   Json.at [ "word" ] Json.string
 
-type Status = Guessing | Winner | Loser
+
+type Status =
+  Guessing Int
+  | Winner
+  | Loser
+
 
 status: Model -> Status
 status model =
   if (winner model)
   then Winner
-  else if ((wrongAttempts model) < 10)
-    then Guessing
-    else Loser
+  else
+    let
+      wrong = wrongAttempts model
+    in
+      if (wrong < attemptsCount)
+      then Guessing (attemptsCount - wrong)
+      else Loser
+
 
 winner: Model -> Bool
 winner { word, used } =
   String.all (\c -> Set.member c used) word
+
 
 wrongAttempts: Model -> Int
 wrongAttempts { word, used } =
@@ -86,6 +113,7 @@ wrongAttempts { word, used } =
   |> Set.fromList
   |> Set.diff used
   |> Set.size
+
 
 -- VIEW
 
@@ -97,9 +125,11 @@ view address model =
     ,  p [] [ button [ onClick address RequestMore, href "#", class "pure-button pure-button-primary" ] [text "New word"] ]
     ]
 
+
+message: Model -> Html
 message model =
   case (status model) of
-    Guessing -> text ( "Attempts remaining " ++ (toString (10 - wrongAttempts model)))
+    Guessing remaining -> text ( "Attempts remaining " ++ (toString remaining))
     Winner -> text "Winner!"
     Loser -> span []
              [ strong [] [ text "Loser! " ]
@@ -107,6 +137,8 @@ message model =
              , em [] [ text model.word ]
              ]
 
+
+showSelected: String -> Set Char -> String
 showSelected word selected =
   String.map
     (\c ->
@@ -116,5 +148,18 @@ showSelected word selected =
     )
     word
 
+
+wotdUrl: String
 wotdUrl =
-  "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=noun&minCorpusCount=100000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"
+  Http.url
+    "http://api.wordnik.com:80/v4/words.json/randomWord"
+    [ ("hasDictionaryDef", "true")
+    , ("includePartOfSpeech", "noun")
+    , ("minCorpusCount", "100000")
+    , ("maxCorpusCount", "-1")
+    , ("minDictionaryCount", "1")
+    , ("maxDictionaryCount", "-1")
+    , ("minLength", "5")
+    , ("maxLength", "-1")
+    , ("api_key", "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5")
+    ]
