@@ -43,7 +43,7 @@ update action model =
       )
 
     NewWord new ->
-      ( { word = Maybe.withDefault model.word (Debug.log "new" new)
+      ( { word = Maybe.withDefault model.word new
         , used = Set.empty
         }
       , Effects.none
