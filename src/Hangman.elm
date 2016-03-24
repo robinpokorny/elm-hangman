@@ -9,8 +9,8 @@ import Task
 import Effects exposing (Effects)
 import Http
 import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
+import Html.Attributes as Attributes
+import Html.Events as Events
 
 
 -- MODEL
@@ -119,10 +119,25 @@ wrongAttempts { word, used } =
 
 view : Signal.Address Action -> Model -> Html
 view address model =
-  div [ class "splash" ]
-    [ h1 [ class "splash-head" ] [ text (String.toUpper (showSelected model.word model.used)) ]
-    , p [ class "splash-subhead"] [ message model ]
-    ,  p [] [ button [ onClick address RequestMore, href "#", class "pure-button pure-button-primary" ] [text "New word"] ]
+  div
+    [ Attributes.class "splash" ]
+    [ h1
+      [ Attributes.class "splash-head" ]
+      [ inputField address
+      , text (String.toUpper (showSelected model.word model.used))
+      ]
+    , p
+      [ Attributes.class "splash-subhead"]
+      [ message model ]
+    , p
+      []
+      [ button
+        [ Events.onClick address RequestMore
+        , Attributes.href "#"
+        , Attributes.class "pure-button pure-button-primary"
+        ]
+        [ text "New word" ]
+      ]
     ]
 
 
@@ -131,11 +146,34 @@ message model =
   case (status model) of
     Guessing remaining -> text ( "Attempts remaining " ++ (toString remaining))
     Winner -> text "Winner!"
-    Loser -> span []
-             [ strong [] [ text "Loser! " ]
-             , text "Word was: "
-             , em [] [ text model.word ]
-             ]
+    Loser ->
+      span []
+        [ strong []
+          [ text "Loser! " ]
+        , text "Word was: "
+        , em []
+          [ text model.word ]
+        ]
+
+
+inputField: Signal.Address Action -> Html
+inputField address =
+  input
+    [ onKeyUp address Guess
+    , Attributes.value ""
+    , Attributes.class "splash-input"
+    ]
+    []
+
+
+onKeyUp : Signal.Address Action -> (Char -> Action) -> Attribute
+onKeyUp address handler =
+  Events.on "keyup" Events.keyCode
+    (\code -> code
+      |> Char.fromCode
+      |> handler
+      |> Signal.message address
+    )
 
 
 showSelected: String -> Set Char -> String

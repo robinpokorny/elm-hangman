@@ -70,7 +70,22 @@ a:focus {
     text-align: center;
 }
 
+.splash-input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: transparent;
+    border: 0px;
+    outline: none;
+    box-shadow: none;
+    color: transparent;
+    cursor: default;
+}
+
 .splash-head {
+    position: relative;
     font-size: 20px;
     font-weight: bold;
     color: white;

@@ -4,3 +4,4 @@ elm-stuff/
 repl-temp-*
 # Compiled JS
 public/elm.js
+elm.js
