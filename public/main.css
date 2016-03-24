@@ -84,6 +84,10 @@ a:focus {
     cursor: default;
 }
 
+.no-touch .splash-input {
+    display: none;
+}
+
 .splash-head {
     position: relative;
     font-size: 20px;

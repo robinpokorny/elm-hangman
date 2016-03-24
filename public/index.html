@@ -32,6 +32,7 @@
 </iv>
 <script src="./elm.js"></script>
 <script>
+  document.documentElement.className += (("ontouchstart" in document.documentElement) ? '' : ' no-touch');
   Elm.embed(Elm.Main, document.getElementById('app'))
 </script>
 </body>
