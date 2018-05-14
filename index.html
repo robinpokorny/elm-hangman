@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Hangman in Elm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple hangman game in Elm.">
+    <link rel="shortcut icon" size="16x16, 32x32, 48x48, 64x64, 128x128, 256x256" href="./favicon.ico">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-horizontal">
+        <a class="pure-menu-heading" href="">Hangman</a>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="http://elm-lang.berlin/" class="pure-menu-link">Elm in Berlin</a></li>
+            <li class="pure-menu-item"><a href="https://github.com/robinpokorny/elm-hangman" class="pure-menu-link">GitHub</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="splash-container" id="app">
+</div>
+
+<div class="footer">
+  <p>
+    <strong>Usage:</strong> Type letters, guess the word in less then 6 attempts and be a winner. Words from <a href="http://developer.wordnik.com/docs.html#!/words/getRandomWord_get_4">Wordnik API</a> with temporary key. Expected to stop working someday.
+  </p>
+  <p><small>Created by <a href="http://robinpokorny.com/">Robin Pokorny</a> during the second <a href="http://elm-lang.berlin/">Berlin Elm Hackathon</a>. Design based on a <a href="http://purecss.io/layouts/marketing/">PureCSS layout</a>.</small></p>
+</iv>
+<script src="./elm.js"></script>
+<script>
+  document.documentElement.className += (("ontouchstart" in document.documentElement) ? '' : ' no-touch');
+  Elm.embed(Elm.Main, document.getElementById('app'))
+</script>
+</body>
+</html>
