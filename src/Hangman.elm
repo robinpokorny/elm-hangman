@@ -216,5 +216,5 @@ wotdUrl =
     , ( "maxDictionaryCount", "-1" )
     , ( "minLength", "5" )
     , ( "maxLength", "-1" )
-    , ( "api_key", "a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5" )
+    , ( "api_key", "8df7629a24338772eb60b0335210c7bd7b795e938e9075b8b" )
     ]
